@@ -19,3 +19,5 @@
 - Socket
 - Input/Output Threads
 - Thread safe collections
+
+**写的代码要尽可能明确，别人一眼就能看明白**
