@@ -1,6 +1,6 @@
 # 第一周学习内容(10.13-10.15)： 
 
-1. Git基础(git-magic.pdf)   
+1. Git基础([git-magic.pdf](https://github.com/BinWone/Training-Java/blob/master/file/git-magic.pdf))   
 2. GFM语法    
 3. **Java基础**
 
