@@ -1,0 +1,72 @@
+Setup Instruction
+Pre Request
+JDK 8
+
+Netbeans with Glassfish
+
+Postgresql
+
+Firefox or Chrome
+
+Note:
+
+Download all the latest versions from their official websites.
+
+Make Netbeans run in English mode, we do not want translations for all the menus and technical terms, we need them in English.
+
+Database
+Login to postgres, create a database for this application, probably sampledb.
+
+Install all SQL files in folder src/main/setup/database to the sampledb database you just created.
+
+You can use pgAdmin (it comes with Postgres installation) to create database, load SQL files and execute them.
+
+This will create all tables and insert some test data. Of course you need to create tables and then load the *_data.sql files.
+
+Glassfish
+1. Start Glassfish
+In Netbeans, Services->Servers->GlassFish Server, right click to start.
+
+Or,
+
+Locate your Glassfish's asadmin command, run this to start:
+
+./glassfish4/bin/asadmin restart-domain
+The above command is just an example, use your asadmin path instead.
+
+2. Edit Database connection Setting
+Edit src/main/setup/glassfish-resources.xml, change database connection info to suit your environment.
+
+Normally Netbeans will try to add this JDBC resource to Glassfish every time the project runs, so you won't need to add it yourself. However things don't always go normal, so keep this command in mind if you see some errors related to database connections:
+
+./glassfish4/bin/asadmin add-resources glassfish-resources.xml
+3. Create jdbcRealm
+Run this command:
+
+./glassfish4/bin/asadmin create-auth-realm --classname com.sun.enterprise.security.auth.realm.jdbc.JDBCRealm --property jaas-context=jdbcRealm:datasource-jndi=jdbc/sample_db:user-table=account.auth_user:user-name-column=name:password-column=passwd:group-table=account.v_auth_user_group:group-table-user-name-column=user_name:group-name-column=group_name:digest-algorithm=none:digestrealm-password-enc-algorithm=none sampleJdbcRealm
+If it throws ClassNotFoundException, then change the
+
+--classname com.sun.enterprise.security.auth.realm.jdbc.JDBCRealm
+
+to
+
+--classname com.sun.enterprise.security.ee.auth.realm.jdbc.JDBCRealm
+
+Note: Keep this command in one line, do not break it to several lines.
+
+Build&Deploy
+Open this project in Netbeans, build and run. Netbeans will start Glassfish if it's not started yet.
+
+If everything goes fine, your default browser(Make it Firefox or Chrome, forget all the others if you think you are a programmer.) will be launched and you will see the login page at http://localhost:8080/sampleweb
+
+Login with username ops and password ops. Or username mgr password mgr, which has account management menu option.
+
+After login, if you can see a colorful dashboard page, you are all set.
+
+Sometimes you need to double check the Glassfish setting for this project. Right click this project and select Properties then Run, make sure Server is the Glassfish Server you want.
+
+Normally Netbeans will deploy Postgresql JDBC driver to Glassfish if it hasn't done yet. But sometimes you need to do it yourself. Download Postgresql JDBC driver and copy it to Glassfish folder like this:
+
+cp postgresql-9.2-1002.jdbc4.jar /Applications/NetBeans/glassfish-4.1/glassfish/domains/domain1/lib/
+Happy Coding
+Now start coding and enjoy it.
