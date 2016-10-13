@@ -6,7 +6,11 @@
 ## Java Basic（编程语言学习路线）
 1. Syntax(语法): OO(面向对象), Control flow(控制流), etc...   
 2. Collection: List, Set, Map, etc...   
-3. **IO: File, Network**   
-4. **Concurrency（并发）**
+3. **IO: File, Network**
+4. **Concurrency（并发）**参考书籍： 《Thinking in Java》
 
-- Thinking in Java
+## Project  
+- Chat Room
+- Socket
+- Input/Output Threads
+- Thread safe collections
