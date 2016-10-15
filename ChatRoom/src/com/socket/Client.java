@@ -1,32 +1,32 @@
 package com.socket;
 
 import java.io.*;
+import java.io.BufferedReader;
 import java.io.IOException;
-import static java.lang.Thread.sleep;
-import java.net.ServerSocket;
+import java.io.InputStreamReader;
 import java.net.Socket;
+
 /**
- *
- * @author lqshanshuo
+ * Created by binwone on 15/10/2016.
  */
+
 public class Client {
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException{
+        int port = 12345;
         String hostName = "localhost";
-        int portNumber = 12345;
-        Socket socket=null;//声明Socket类
-        try {
-            try{
-                socket = new Socket(hostName,portNumber);//新建socket连接
-            }catch(Exception e){
-                System.out.println("Connection failed!");
+        Socket socket = null;
+        try{
+            try {
+                socket = new Socket(hostName,port);
+            }catch (IOException e){
+                System.out.println("Connect failed!");
             }
-            //获取用户键盘输入字符流
+            // 获取用户键盘输入
             BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
 
             //获取输出流，用于客户端向服务器端发送数据
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 
-            //本地创建文本文件存储历史记录
             String historyFileName;
             do{
                 historyFileName=""+(int)(Math.random()*100000);
@@ -34,20 +34,18 @@ public class Client {
             File f = new File("./history/"+historyFileName+".txt");
             PrintWriter history = new PrintWriter(new FileWriter(f,true));
 
-            try{
-                new ReceiveThread(socket,history);//创建单独线程接收服务器信息
-            }catch(IOException e){
+            try {
+                new MultiClient(socket, history);
+            }catch (IOException e){
                 socket.close();
-                f.delete();
-                System.out.println("Receive Thread start failed!This socket is closed.");
+                System.out.println("Client Thread start failed! This socket is closed.");
             }
-            while(true){
+            while (true){
                 //获取用户键盘输入
                 String str = userInput.readLine();
-                try{sleep(1);}catch(Exception e){System.out.println(e.getMessage());}
                 //历史记录功能
                 if(str.startsWith("/history")){
-                    String[] strSplit=str.split(" +");
+                    String[] strSplit=str.split(" ");
                     BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
                     String lineTxt = null;
                     int i=0,sign=0;
@@ -100,3 +98,4 @@ public class Client {
         }
     }
 }
+
