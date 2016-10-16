@@ -112,8 +112,10 @@ public class MultiServer extends Thread {
                 }else if (!userInput.startsWith("/")){
                     dos.writeUTF("你说："+userInput);
                     for (Socket s: socketMap.keySet()){
-                        dos_new = new DataOutputStream(s.getOutputStream());
-                        dos_new.writeUTF(strName[1]+"说："+userInput);
+                        if (!s.equals(socket)){
+                            dos_new = new DataOutputStream(s.getOutputStream());
+                            dos_new.writeUTF(strName[1]+"说："+userInput);
+                        }
                     }
                 }else{
                     dos.writeUTF("Invaild command! Please input again.");
